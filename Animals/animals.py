@@ -11,5 +11,7 @@ class Animal(pydantic.BaseModel):
     job: str
     personality: str
     daily_routine: str
-    memory: pydantic.Field(Memory)
+    memory: Memory
+
+    
 
