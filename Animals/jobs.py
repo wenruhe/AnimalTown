@@ -5,8 +5,7 @@ class Job:
     def __init__(self, name:str, description:str, impact_areas: List[str], required_resources=Optional[list], provided_services=Optional[list]):
         self.name = name
         self.description = description
-        self.impact_areas = impact_areas
-        self.required_resources = required_resources
+        self.impact_areas = impact_areas # 和town的属性值相关：文化值、安全值等，refer to town.py
         self.provided_services = provided_services
     
     def add_required_resource(self, resources):
@@ -24,7 +23,6 @@ class Job:
         print(f"职业名称: {self.name}")
         print(f"职责描述: {self.description}")
         print(f"影响领域: {', '.join(self.impact_areas)}")
-        print(f"所需资源: {', '.join(self.required_resources)}")
         print(f"提供的服务: {', '.join(self.provided_services)}")
 
  
