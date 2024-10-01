@@ -25,4 +25,3 @@ class Job:
         print(f"影响领域: {', '.join(self.impact_areas)}")
         print(f"提供的服务: {', '.join(self.provided_services)}")
 
- 
