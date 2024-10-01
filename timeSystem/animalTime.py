@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field
 from typing import Optional, List
-from timeSystem.festivals import Festival
 
 
 
@@ -10,6 +9,7 @@ class TimeDuration(BaseModel):
     """
     hours: int = Field(0, ge=0)  # 确保 hours 为非负整数
     days: int = Field(0, ge=0)   # 确保 days 为非负整数
+    seasons: int = Field(0, ge=0) # 确保 seasons 为非负整数
     years: int = Field(0, ge=0)  # 确保 years 为非负整数
 
 
@@ -27,49 +27,52 @@ class AnimalTime(BaseModel):
     DAYS_IN_YEAR: int = 120
     SEASONS: list = ["春季", "夏季", "秋季", "冬季"]
 
+
     def __str__(self) -> str:
         return f"{self.time}点，{self.SEASONS[self.season_idx]}第{self.day}天，第{self.year}年"
 
 
-    def advance_time(self, duration:TimeDuration):
+    def advance_time(self, duration: TimeDuration):
         """
-        take in 一个time period，更新当前自身时间点为 + time period后的时间点
+        通过传入的 TimeDuration 对象推进时间，更新当前时间点
         """
+        # 处理时间的推进：小时、天数、季节、年份
         hours = duration.hours
         days = duration.days
+        seasons = duration.seasons
         years = duration.years
 
-        total_hours = (
-            years * self.DAYS_IN_YEAR * self.HOURS_IN_DAY +
-            days * self.HOURS_IN_DAY +
-            hours
-        )
-
+        # 1. 处理小时数的推进
+        total_hours = hours
         self.time += total_hours % self.HOURS_IN_DAY
         extra_days = total_hours // self.HOURS_IN_DAY
 
-        # 如果小时数超过了一天，调整小时并增加一天
         if self.time >= self.HOURS_IN_DAY:
             self.time -= self.HOURS_IN_DAY
             extra_days += 1
 
-        # 更新天数，并计算需要增加的季节数
-        self.day += extra_days
+        # 2. 处理天数的推进
+        total_days = extra_days + days
+        self.day += total_days
+
         extra_seasons = 0
         while self.day > self.DAYS_IN_SEASON:
             self.day -= self.DAYS_IN_SEASON
             extra_seasons += 1
 
-        # 更新季节，并计算需要增加的年数
-        self.season_idx += extra_seasons
+        # 3. 处理季节的推进
+        total_seasons = extra_seasons + seasons
+        self.season_idx += total_seasons
+
         extra_years = 0
         while self.season_idx >= len(self.SEASONS):
             self.season_idx -= len(self.SEASONS)
             extra_years += 1
 
-        # 更新年份
-        self.year += extra_years
+        # 4. 处理年份的推进
+        self.year += extra_years + years
     
+
     def is_later_than(self, another_time: "AnimalTime") -> bool: ## 这里用了前向引用！tmd我也不知道为啥这样能行，但是another_time是一个Time object！！！？？
         if self.year != another_time.year:
             return self.year > another_time.year
@@ -80,27 +83,3 @@ class AnimalTime(BaseModel):
         if self.time != another_time.time:
             return self.time > another_time.time
         return False
-
-
-class Calendar(BaseModel):
-    cur_time: AnimalTime = AnimalTime()
-    # festival_list: List[Festival] = []
-
-    # TODO: 生成初始节日
-    def _init_festivals(self):
-        pass
-    
-    
-    # TODO: 查看今天有什么节日
-    def check_today() -> List[Festival]:
-        pass
-
-
-if __name__ == "__main__":
-    calendar = Calendar() # calendar 当前时间为 0点，春季第1天，第1年
-    time1 = AnimalTime() # time1 当前时间为 0点，春季第1天，第1年
-    time1.advance_time(TimeDuration(years=2)) # time1 当前时间为 0点，春季第1天，第3年
-    print(time1)
-    calendar.cur_time.advance_time(TimeDuration(hours=999)) # calendar 当前时间为 15点，夏季季节第12天，第1年
-    print(calendar.cur_time)
-    print(calendar.cur_time.is_later_than(time1)) # false
