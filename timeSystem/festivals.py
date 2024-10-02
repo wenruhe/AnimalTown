@@ -28,18 +28,24 @@ class Festival(BaseModel):
     duration: TimeDuration = TimeDuration(days=1)  # 节日持续时间，默认为1天
     description: str = Field("", description="节日描述")
     occurrences: List[AnimalTime] = []  # 过去举办的时间
-    memories: List = [] # TODO: 等memory class写好给festival添加memory，上次这个节日的表现如何
+    tasks: List = []                                     # TODO: 等task class写好给festival添加task，需要玩家号召小动物们做什么
+    event_triggers: List = []                            # TODO: 会trigger哪些事件
+    memories: List = []                                  # TODO: 等memory class写好给festival添加memory，上次这个节日的表现如何
+    rewards: List = []                                   # TODO: 设置节日完成良好的奖励
 
 
     def __str__(self):
         return self.description
     
+
     def __len__(self):
         return len(self.occurrences)
     
+
     def _print_info(self):
-        return f"下一次 {self.name} 将在 {self.next_occurrence} 举办。\n 举办频率为 {self.frequency} {self.frequency_unit} 一次。\n 这个节日一共举行了 {self.occurrences_count} 次"
+        return f"下一次 {self.name} 将在 {self.next_occurrence} 举办。\n 举办频率为 {self.frequency} {self.frequency_unit} 一次。\n 这个节日一共举行了 {len(self)} 次"
     
+
     def occur_once(self):
         """
         举办一次，次数+1，更新下一次举办时间
@@ -58,20 +64,36 @@ class Festival(BaseModel):
             time_duration_ = TimeDuration(years=self.frequency)
         self.next_occurrence.advance_time(time_duration_)
 
-
         # TODO: 更新这次的节日表现！
 
         pass
 
-if __name__ == "__main__":
-    harvest_festival = Festival(
-        name="丰收节", 
-        next_occurrence=AnimalTime(day=1, season_idx=2, year=4), 
-        description="秋季是丰收的季节，所有农夫都忙于收割作物。镇上的动物们举办了一个庆祝收成的节日，并向镇长（玩家）展示他们的收获。",
-        occurrences=[
-            AnimalTime(day=10, season_idx=2, year=1),
-            AnimalTime(day=10, season_idx=2, year=2),
-            AnimalTime(day=10, season_idx=2, year=3)
-        ]
-    )
-    print(len(harvest_festival)) # 3
+
+planting_festival = Festival(
+    name="植树节",
+    next_occurrence=AnimalTime(day=1, season=0, year=1),
+    description="镇上每年都会举办植树节，所有动物都会参与在公共区域种植树木和花卉，象征新的开始和环境保护。",
+    tasks=['指示农夫种植特定的花卉和树木'],
+    event_triggers=['商人贩卖园艺相关的商品'],
+    rewards=['吸引更多小动物搬入']
+)
+
+spring_feast_festival = Festival(
+    name='春之宴',
+    next_occurrence=AnimalTime(day=30, season=0, year=1),
+    description="春天的结束标志着丰收的开始。动物们聚集在一起，分享各自种植的食物和制作的美食，庆祝新的成长。",
+    tasks=['帮助安排宴会场地', '确保商人和农夫们提供足够的食物。'],
+    event_triggers=['具有艺术特性的小动物们会组织表演娱乐活动，给庆典增加色彩', '商人可能会出售稀有的春季特产']
+)
+
+harvest_festival = Festival(
+    name="丰收节", 
+    next_occurrence=AnimalTime(day=1, season_idx=2, year=1), 
+    description="秋季是丰收的季节，所有农夫都忙于收割作物。镇上的动物们举办了一个庆祝收成的节日，并向镇长（玩家）展示他们的收获。",
+    # occurrences=[
+    #     AnimalTime(day=10, season_idx=2, year=1),
+    #     AnimalTime(day=10, season_idx=2, year=2),
+    #     AnimalTime(day=10, season_idx=2, year=3)
+    # ]
+)
+
