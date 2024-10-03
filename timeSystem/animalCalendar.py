@@ -4,7 +4,7 @@ from typing import Optional, List
 from timeSystem.animalTime import AnimalTime, TimeDuration
 from timeSystem.festivals import Festival
 
-class Calendar(BaseModel):
+class AnimalCalendar(BaseModel):
     cur_time: AnimalTime = AnimalTime()
     festival_list: List[Festival] = []
 
@@ -19,7 +19,7 @@ class Calendar(BaseModel):
 
 
 if __name__ == "__main__":
-    calendar = Calendar() # calendar 当前时间为 0点，春季第1天，第1年
+    calendar = AnimalCalendar() # calendar 当前时间为 0点，春季第1天，第1年
     time1 = AnimalTime() # time1 当前时间为 0点，春季第1天，第1年
     time1.advance_time(TimeDuration(years=2)) # time1 当前时间为 0点，春季第1天，第3年
     print(time1)

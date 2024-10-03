@@ -86,6 +86,20 @@ spring_feast_festival = Festival(
     event_triggers=['具有艺术特性的小动物们会组织表演娱乐活动，给庆典增加色彩', '商人可能会出售稀有的春季特产']
 )
 
+flea_market_festival = Festival(
+    name="跳蚤集市",
+    next_occurrence=AnimalTime(day=15, season_idx=1, year=1),
+    description="每年夏天，镇上都会举办大集市，小动物们可以出售自己的手工制品和家乡特产，商人会出售稀有商品。",
+    event_triggers=['吸引外来商人']
+)
+
+dragon_boat_festival = Festival(
+    name="龙舟节",
+    next_occurrence=AnimalTime(day=20, season_idx=1, year=1),
+    description='夏天炎热，动物们举办了一场划船比赛。所有动物都可以参加，优胜者将获得特殊奖励。',
+    event_triggers=['龙舟比赛']
+)
+
 harvest_festival = Festival(
     name="丰收节", 
     next_occurrence=AnimalTime(day=1, season_idx=2, year=1), 
@@ -95,5 +109,17 @@ harvest_festival = Festival(
     #     AnimalTime(day=10, season_idx=2, year=2),
     #     AnimalTime(day=10, season_idx=2, year=3)
     # ]
+)
+
+winter_celebration = Festival(
+    name='冬日节庆',
+    next_occurrence=AnimalTime(day=1, season_idx=3, year=1),
+    description='冬天的第一个大雪日，镇上举行盛大的庆祝活动，镇民们装饰街道、点亮灯火，并交换礼物。'
+)
+
+new_year_festival = Festival(
+    name='新年庆典',
+    next_occurrence=AnimalTime(day=30, season_idx=3, year=1),
+    description='新年的到来是一个重大的节日。所有动物聚集在一起，回顾过去一年，展望未来，并举办大型的宴会和烟火表演。'
 )
 
