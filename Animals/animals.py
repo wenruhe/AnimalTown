@@ -1,17 +1,18 @@
-import pydantic
+from pydantic import BaseModel, PrivateAttr
 import uuid
-from typing import Literal
-from memory import Memory
+from typing import Literal, List
 
-class Animal(pydantic.BaseModel):
-    _id: uuid.UUID = pydantic.Field(default_factory=uuid.uuid4)
+
+class Animal(BaseModel):
+    _id: uuid.UUID = PrivateAttr(default_factory=uuid.uuid4)
     name: str
     age: int
     gender: Literal['Female', 'Male']
     job: str
-    personality: str
-    daily_routine: str
-    memory: Memory
+    personality: List[str]
+    memory: List[str] = []
+
+    
 
     
 
