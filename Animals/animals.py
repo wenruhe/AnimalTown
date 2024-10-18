@@ -1,10 +1,11 @@
-from pydantic import BaseModel, PrivateAttr
+from pydantic import BaseModel, Field
 import uuid
 from typing import Literal, List
-
+from db.userConfigs import user_credentials
 
 class Animal(BaseModel):
-    _id: uuid.UUID = PrivateAttr(default_factory=uuid.uuid4)
+    userID: str = user_credentials.USERID
+    animalID: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
     age: int
     gender: Literal['Female', 'Male']
@@ -12,7 +13,5 @@ class Animal(BaseModel):
     personality: List[str]
     memory: List[str] = []
 
-    
 
-    
 

@@ -1,10 +1,10 @@
-from neo4j import GraphDatabase, RoutingControl
-from db.configs import settings
+from neo4j import GraphDatabase, Driver
+from db.appConfigs import settings
 
 class Neo4jConnector:
     _instance = None
 
-    def __new__(cls):
+    def __new__(cls) -> Driver:
         if cls._instance is None:
             try:
                 cls._instance = GraphDatabase.driver(settings.NEO4J_URI, auth=(settings.NEO4J_USERNAME, settings.NEO4J_PASSWORD))
@@ -17,6 +17,6 @@ class Neo4jConnector:
     def close(self):
         if self._instance:
             self._instance.close()
-        
 
-neo4jConnector = Neo4jConnector()
+
+neo4j_connection = Neo4jConnector()

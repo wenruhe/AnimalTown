@@ -4,7 +4,7 @@ class AppSettings:
     NEO4J_URI="neo4j+s://fb8e86ee.databases.neo4j.io"
     NEO4J_USERNAME="neo4j"
     NEO4J_PASSWORD="JWtSai9Y9f0JyV1IOs2g8ishJm3d-NTUFq_FMthsfzA"
-    NEO4J_DATABASE="neo4j"
+    NEO4J_DATABASE_NAME="neo4j"
     # AURA_INSTANCEID="fb8e86ee"
     # AURA_INSTANCENAME="Instance01"
 
