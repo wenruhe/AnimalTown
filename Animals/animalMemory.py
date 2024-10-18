@@ -18,10 +18,26 @@ class AnimalMemory(Memory):
     def llm_generate_daily_exe(self):
         daily_sum_prompt = "你是动物小镇的动物记忆管理者。请根据{animal_name}的日常记忆，生成一段关于今天发生的总结。"
         daily_mood_analyse = "你是动物小镇的动物记忆管理者。请根据{animal_name}的日常记忆，结合行为分析该动物今天与其他动物之间的情绪变化情况，并返回对该动物在情感关系、工作关系上是否有提升或下降。"
+        # 调用LLM函数
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": daily_sum_prompt}
+            ]
+        )
         
-        daily_sum = """llm func(daily_sum, daily_memory)"""
+        daily_sum = response['choices'][0]['message']['content']
         
-        analyse = """llm func(daily_mood_analyse, daily_memory),再对这个分析结果用正则函数进行处理，返回关系的上升或下降，把值代入该动物的Animal_relations中"""
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": daily_mood_analyse}
+            ]
+        )
+        
+        analyse = response['choices'][0]['message']['content']
         
         return daily_sum, analyse
 
@@ -43,3 +59,7 @@ class AnimalMemory(Memory):
         llm_daily_phase_sum = """generate()""" #LLM代入 平日总结、当前需求、当前总体记忆，生成新的总体记忆
         #forget()
         self.overall_memory.append(daily_phase_sum)
+    
+    
+
+ 
