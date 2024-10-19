@@ -48,7 +48,7 @@ class Relationships:
             relationships_exist = result.single()
 
             if not relationships_exist:
-                # >>>>>>这个需要商议是raise error还是直接修改
+                # >>>>>>这个需要商议是raise error还是直接修改<<<<<<<<
                 raise AnimalsNotKnowEachOtherError(f"{animal1.name} and {animal2.name} do not know each other!")
                 cls.init_relationship(animal1, animal2)
 

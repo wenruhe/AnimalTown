@@ -6,8 +6,9 @@ class UserSettings:
         self.USERNAME = username
         self.PASSWORD = pwd
         if self.check_credentials():
-            print(f"User Name: {self.USERNAME} \n UserID: {self.USERID}")
+            print(f"User Name: {self.USERNAME}\nUserID: {self.USERID}")
     
+    # 查看用户名和密码对不对，没有的话创建
     def check_credentials(self) -> bool:
         up_collection = mongo_connection["credentials"]["users_pwds"] # credential collection in MongoDB
         user_record = up_collection.find_one({"username": self.USERNAME})
@@ -23,6 +24,7 @@ class UserSettings:
                 "password": hashed_password
             })
 
+            # USERID会用来在云端和角色、物品、事件等object相连合
             self.USERID = hashlib.sha256(f"{self.USERNAME}:{self.PASSWORD}".encode()).hexdigest()
             self.MONGO_DATABASE_NAME = hashlib.md5(f"{self.USERNAME}:{self.PASSWORD}".encode()).hexdigest()
             return True
