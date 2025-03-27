@@ -8,7 +8,18 @@ class Relationships:
     driver = neo4j_connection
     database = settings.NEO4J_DATABASE_NAME
 
-    def _load(cls, ):
+    def _load_all(cls) -> None:
+        query = (
+            "MATCH (a:Animal) RETURN a"
+        )
+        with cls.driver.session() as session:
+            results = session.run(
+                query, userID=user_credentials.USERID, database_=cls.database
+            )
+            for r in results:
+                node = dict(r["a"])
+                animal = Animal(**node)
+                print(animal)
         pass
 
     def add_animal(cls, animal:Animal) -> None: 
