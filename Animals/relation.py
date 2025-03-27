@@ -8,6 +8,9 @@ class Relationships:
     driver = neo4j_connection
     database = settings.NEO4J_DATABASE_NAME
 
+    def _load(cls, ):
+        pass
+
     def add_animal(cls, animal:Animal) -> None: 
         query = (
             "CREATE (a:Animal { userID: $userID, animalID: $animalID, name: $name, age: $age, gender: $gender, job: $job, personality: $personality }) "
